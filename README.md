@@ -11,7 +11,7 @@ Clone the repo
 git clone https://github.com/leapbtw/free-wifi-scanner.git
 cd free-wifi-scanner
 ```
-Get an API key from Google https://console.cloud.google.com/marketplace/product/google/geolocation.googleapis.com (you can use free trial)
+Get an API key from Google https://console.cloud.google.com/marketplace/product/google/geolocation.googleapis.com (you can use free trial), and save it in plain text to .api.txt
 
 ## 2. Install the requirements
 ```
