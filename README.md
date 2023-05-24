@@ -35,3 +35,5 @@ the software will generate a CSV file which contains any data harvested while ru
 python3 create_map.py example.csv
 ```
 this will create a **map.html** file in the current directory. Open it in your browser
+
+![Example](example.png)
