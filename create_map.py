@@ -51,7 +51,7 @@ def main(csv_path):
        
 
     # Save the map as an HTML file
-    m.save('cartina.html')
+    m.save('map.html')
 
 
 

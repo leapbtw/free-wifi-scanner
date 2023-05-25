@@ -11,32 +11,37 @@ import math
 def main(wireless_interface):
     # getting the date to create a unique file
     now = datetime.now()
-    nome_file = now.strftime("%d-%m-%Y+%H:%M:%S") + ".csv"
-    os.system('touch ' + nome_file)
-    
     complete_array = []                             # array that gets printed to the CSV file
     printed_networks = ["NO_FREE_NETWORKS_FOUND"]   # not to be printed (again), check create_map.py
     
     # running until CTRL + C
     try:
-        while(True):
-            should_print = True                     # this is so i can print every network we find ONLY 1 time
-            wifis = get_nearby_wifis()              # get nearby wifi networks
-            pos = get_pos(wireless_interface)       # get current position coordinates of the device using Google's APIs
-            
-            for w in wifis:
-                for already_printed in printed_networks:        # check if we already printed that we've found this network
-                    if w == already_printed:
-                        should_print = False
-                if should_print:
-                    printed_networks.append(w)
-                    print("New free network found: " + w)
+        while True:
+            try:
+                should_print = True                     # this is so i can print every network we find ONLY 1 time
+                wifis = get_nearby_wifis()              # get nearby wifi networks
+                pos = get_pos(wireless_interface)       # get current position coordinates of the device using Google's APIs
                 
-                new_wifi = [pos, w]
-                complete_array.append(new_wifi)                 # appending new found wifi to the array that gets written to the CSV
+                for w in wifis:
+                    for already_printed in printed_networks:        # check if we already printed that we've found this network
+                        if w == already_printed:
+                            should_print = False
+                    if should_print:
+                        printed_networks.append(w)
+                        print("New free network found: " + w)
+                    
+                    new_wifi = [pos, w]
+                    complete_array.append(new_wifi)                # appending new found wifi to the array that gets written to the CSV
+            except Exception as e:
+                print(wireless_interface + " seems busy, or something... ignoring it. If you see this message often, there might be a problem with it.")
+                pass
     except KeyboardInterrupt:
         print("Keyboard interrupt detected. Exiting...")
-    write_array_to_csv(complete_array, nome_file)               # when CTRL + C, writing the CSV to the current directory
+    
+    if complete_array != []:
+        nome_file = now.strftime("%d-%m-%Y+%H:%M:%S") + ".csv"
+        os.system('touch ' + nome_file)
+        write_array_to_csv(complete_array, nome_file)               # when CTRL + C, writing the CSV to the current directory
 
 def get_wireless_interface():
     result = subprocess.run(['iw', 'dev'], capture_output=True, text=True)
