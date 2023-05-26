@@ -3,6 +3,7 @@ import os
 import subprocess
 import requests
 from datetime import datetime
+import time
 import json
 import csv
 import signal
@@ -34,6 +35,7 @@ def main(wireless_interface):
                     complete_array.append(new_wifi)                # appending new found wifi to the array that gets written to the CSV
             except Exception as e:
                 print(wireless_interface + " seems busy, or something... ignoring it. If you see this message often, there might be a problem with it.")
+                time.sleep(5)
                 pass
     except KeyboardInterrupt:
         print("Keyboard interrupt detected. Exiting...")
@@ -86,8 +88,7 @@ def get_pos(interface):
     try:
         iw_output = subprocess.check_output(["sudo", "iw", "dev", interface, "scan"], universal_newlines=True)
     except subprocess.CalledProcessError as e:
-        print(f"Error executing 'iw', is 'iw' installed? command: {e}")
-        exit(1)
+        pass
 
     # Step 3: Parse the output to extract Wi-Fi network information
     networks = []
